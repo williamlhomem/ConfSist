@@ -1,0 +1,3 @@
+# Introdução à Confiabilidade de Sistemas
+
+Repositório destinado à disciplina de Introdução à Confiabilidade de Sistemas, ofertada pelo Departamento de Engenharia Mecânica da Universidade Federal do Espírito Santo no primeiro semestre de 2021. Esta disciplina, em que fui monitor, tinha como objetivo discutir soluções baseadas em aprendizado de máquina e ciência de dados para problemas de engenharia.
