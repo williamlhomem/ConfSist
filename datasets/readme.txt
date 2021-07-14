@@ -1,0 +1,1 @@
+O arquivo sensor.csv, importado pelo notebook pumpsensor.ipynb não está presente neste repositório devido ao seu tamanho. Todavia, esse conjunto de dados pode ser acessado por meio da plataforma Kaggle (https://www.kaggle.com/nphantawee/pump-sensor-data).
