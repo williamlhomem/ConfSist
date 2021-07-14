@@ -8,6 +8,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
+from utils import process
+from math import factorial
+from itertools import combinations
+
 
 def create_df(data, sensors=False):
     '''
@@ -215,7 +219,7 @@ def mvar_corr(data, sensors=False, th=False, report=False):
     X[cols] = std_scaler.fit_transform(X[cols])
 
     # criação e treinamento do modelo
-    lrgressor = LogisticRegression(penalty='l1', max_iter=1000, solver='liblinear')
+    lrgressor = LogisticRegression(penalty='l1', max_iter=1000, solver='liblinear', random_state=42)
     lrgressor.fit(X, y)
 
     # verificação se o modelo convergiu
@@ -241,13 +245,12 @@ def mvar_corr(data, sensors=False, th=False, report=False):
     ax.set_ylabel('Importância', size=20)
     ax.tick_params(labelsize=20, rotation=90)
 
-def redundant_features(data, sensors=False, th=.95):
+def redundant_features(data, sensors=False):
     '''
     Função responsável por plotar um mapa de calor apresentando as variáveis redundantes.
     I/O:
         data: um pandas dataframe contendo os dados do pump sensor data;
-        sensors: uma lista ou um numpy array contendo o nome das colunas referentes aos sensores de interesse para a plotagem;
-        th: um float indicando o threshold a ser usado para definir se as variáveis são redundantes.
+        sensors: uma lista ou um numpy array contendo o nome das colunas referentes aos sensores de interesse para a plotagem.
     '''
     # criação dodf e de variáveis auxiliares
     df = create_df(data, sensors=sensors)
