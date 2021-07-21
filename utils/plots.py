@@ -58,7 +58,7 @@ def sensor_plot(data, sensors=False):
         ax[iax].set_ylabel(f'{s}', size=20)
         ax[iax].tick_params(labelsize=20)
         ax[iax].grid()
-        ax[iax].legend()
+        ax[iax].legend(prop={'size':20})
 
         iax+=1
 
@@ -82,7 +82,7 @@ def dist_plot(data, sensors=False):
     # configuração e plotagem
     n_cols = 2
     n_rows = np.ceil(n_sensors/n_cols).astype('int')
-    fig, ax = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(8*n_cols, 8*n_rows), tight_layout=True)
+    fig, ax = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(7*n_cols, 7*n_rows), tight_layout=True)
     ax = ax.reshape((n_cols*n_rows,))
     iax = 0
     for s in sensor_cols:
@@ -120,7 +120,7 @@ def boxplot(data, sensors=False):
     # configuração e plotagem
     n_cols = 2
     n_rows = np.ceil(n_sensors/n_cols).astype('int')
-    fig, ax = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(8*n_cols, 8*n_rows), tight_layout=True)
+    fig, ax = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(7*n_cols, 7*n_rows), tight_layout=True)
     ax = ax.reshape((n_cols*n_rows,))
     iax = 0
     for s in sensor_cols:
@@ -259,6 +259,6 @@ def redundant_features(data, sensors=False):
 
     # configuração e plotagem
     mask = np.triu(np.ones_like(corr_df, dtype='bool'))
-    fig, ax = plt.subplots(figsize=(20,15))
+    fig, ax = plt.subplots(figsize=(15,15))
     sns.heatmap(data=corr_df, vmin=-1, vmax=1, annot=True, cmap='coolwarm', mask=mask, ax=ax)
     ax.tick_params(labelsize=20)
