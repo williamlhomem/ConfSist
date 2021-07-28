@@ -183,3 +183,55 @@ def redundant_features(data, sensors=False):
     fig, ax = plt.subplots(figsize=(15,15))
     sns.heatmap(data=corr_df, vmin=-1, vmax=1, annot=True, cmap='coolwarm', mask=mask, ax=ax)
     ax.tick_params(labelsize=15)
+
+def compare_data(data, exp=False):
+    '''
+    Função responsável por comparar os dados tratados e os dados originais, em relação à taxa de amostragem.
+    I/O:
+        data: um numpy array contendo os dados do Hydraulic Systems Dataset;
+        exp: um inteiro contendo o número de experimento a ser comparado. Caso exp=False, o experimento é sorteado aleatoriamente.
+    '''
+    # escolha de um experimento arbitrário
+    n_exp = np.random.randint(0, data.shape[0])
+    if exp:
+        n_exp = exp
+
+    # carregamento de um sensor de 1 hz e de 10 hz para verificação do upsampling
+    onehz_path = './datasets/hydro/VS1.txt'
+    vib = pd.read_csv(onehz_path, delimiter='\t', header=None).loc[n_exp,:]
+
+    tenhz_path = './datasets/hydro/FS1.txt'
+    flow = pd.read_csv(tenhz_path, delimiter='\t', header=None).loc[n_exp,:]
+
+    # Separação dos dados após o upsampling
+    # A indetificação do sensor pode ser feita por meio da verificação de hydro_utils.process.load_hydroSystem
+    up_vib = data[n_exp, :, 13]
+    up_flow = data[n_exp, :, 6]
+
+    # configuração e plotagem
+    fig, ax = plt.subplots(nrows=2, figsize=(20,10), tight_layout=True)
+    tax = [ax[0].twiny(), ax[1].twiny()]
+
+    # plot da eficiência
+    ax[0].plot(up_vib, 'b')
+    ax[0].set_xlabel('Timestamp [100 hz]', size=15)
+    ax[0].set_ylabel('Fator de eficiência [%]', size=15)
+    ax[0].tick_params(labelsize=15)
+    ax[0].grid()
+
+    tax[0].plot(vib, 'r')
+    tax[0].set_xlabel('Timestamp [1 hz]', size=15)
+    tax[0].legend((ax[0].get_lines()[0], tax[0].get_lines()[0]), ('Upsampling', 'Original'))
+    tax[0].tick_params(labelsize=15)
+
+    # plot da vazão
+    ax[1].plot(up_flow, 'b')
+    ax[1].set_xlabel('Timestamp [100 hz]', size=15)
+    ax[1].set_ylabel('Vazão [L/min]', size=15)
+    ax[1].tick_params(labelsize=15)
+    ax[1].grid()
+
+    tax[1].plot(flow, 'r')
+    tax[1].set_xlabel('Timestamp [1 hz]', size=15)
+    tax[1].legend((ax[0].get_lines()[0], tax[1].get_lines()[0]), ('Upsampling', 'Original'))
+    tax[1].tick_params(labelsize=15)
