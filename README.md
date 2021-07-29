@@ -13,9 +13,9 @@ O *notebook* intitulado pumpsensor.ipynb contém a solução de um problema de i
 ![sensor](./img/sensor.png)
 
 ## *Hydraulic Systems Dataset*
-O *notebook* hydro.ipynb apresenta a solução de um problema de monitoramento baseado na condição de uma bancada hidráulica constituido de dois sistemas: um primário de trabalho e um de refrigeração e filtragem. O objetivo dessa seção do portifólio é apresentar o desenvolvimento de um projeto que simule um problema real. Para tanto, além das etapas típicas à ciência de dados, uma situação hipotética foi levantada para que fosse possível analisar uma métrica de negócio. O Jupyter Notebook pode ser acessado diretamente pelo repositório ou pelo [link](https://williamlhomem.github.io/ConfSist/hydro.html).
+O *notebook* hydro.ipynb apresenta a solução de um problema de monitoramento baseado na condição de uma bancada hidráulica constituída de dois sistemas: um primário de trabalho e um de refrigeração e filtragem. O objetivo dessa seção do portifólio é apresentar o desenvolvimento de um projeto que simule um problema real. Para tanto, além das etapas típicas da ciência de dados, uma situação hipotética foi levantada para que fosse possível analisar uma métrica de negócio. O Jupyter Notebook pode ser acessado diretamente pelo repositório ou pelo [link](https://williamlhomem.github.io/ConfSist/hydro.html).
 
-O *dataset* utilizado para a criação de um modelo de aprendizado de máquina, denominado de *Hydraulic Systems Dataset* pode ser acessado na [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). O modelo criado foi capaz de prever a condição do trocador de calor, localizado no sistema resfriamento e filtragem, com uma métrica $F_1$ média de 99,33\%, garantindo uma redução de 44% no custo de manutenção e substituição do equipamento.
+O *dataset* utilizado para a criação de um modelo de aprendizado de máquina, denominado de *Hydraulic Systems Dataset*, pode ser acessado na [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). O modelo criado foi capaz de prever a condição do trocador de calor, localizado no sistema resfriamento e filtragem, com uma métrica $F_1$ média de 99,33\%, garantindo uma redução de 44% no custo de manutenção e substituição do equipamento.
 
 ![hydro](./img/hydroSystem.png)
 
