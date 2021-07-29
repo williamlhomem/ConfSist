@@ -1,1 +1,3 @@
 O arquivo sensor.csv, importado pelo notebook pumpsensor.ipynb não está presente neste repositório devido ao seu tamanho. Todavia, esse conjunto de dados pode ser acessado por meio da plataforma Kaggle (https://www.kaggle.com/nphantawee/pump-sensor-data).
+
+Os arquivos contidos na pasta datasets/hydro, bem como o próprio diretório, importados pelo notebook hydro.ipynb não estãp presentes neste repositório devido ao seu tamanho. Todavia, esse conjunto de dados pode ser acessado por meio da UCI (https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems).

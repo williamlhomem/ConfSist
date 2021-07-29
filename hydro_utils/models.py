@@ -95,3 +95,48 @@ class RF_classifier(RandomForestClassifier):
             preds = self.predict(reshaped_x)
 
             print(classification_report(y, preds))
+
+def metrics_conversion(baseline, model, sample_x, temps, sample_y):
+    '''
+    Função responsável por realizar a conversão entre as métricas do modelo de ML para as métricas de negócio.
+    I/O:
+        baseline: um hydro_utils.models.baseline_model contendo o modelo base;
+        model: um RandomForestClassifier contendo o modelo de ML;
+        sample_x: um numpy array contendo a entrada do modelo de ML;
+        temps: um numpy array contendo as temperaturas de entrada do baseline model;
+        sample_y: um numpy array contendo os rótulos.
+    '''
+    # predições dos modelos
+    base_preds = baseline.predict(temps)
+    ml_preds = model.predict(sample_x.reshape((sample_x.shape[0], -1)))
+
+    # criação do df de comparação
+    compare_df = pd.DataFrame()
+    compare_df['baseline'] = base_preds
+    compare_df['model'] = ml_preds
+    compare_df['actual'] = sample_y
+
+    # determinação da métrica de negócio
+    def metric(series):
+        series = series.values
+        true = series[0]
+        pred = series[1]
+        
+        # caso da identificação de baixa eficiência
+        if (true == 20) and (pred == 20):
+            cost = -500
+        # caso da identificação da falha total
+        elif (true == 3) and (pred == 3):
+            cost = 1500
+        # caso da identificação equivocada da falha total:
+        elif (true == 3) and (pred != 3):
+            cost = 2500
+        else:
+            cost = 0
+        
+        return cost
+
+    compare_df['baseline_cost'] = compare_df[['actual', 'baseline']].apply(metric, axis='columns')
+    compare_df['model_cost'] = compare_df[['actual', 'model']].apply(metric, axis='columns')
+
+    return compare_df

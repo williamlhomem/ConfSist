@@ -215,7 +215,7 @@ def compare_data(data, exp=False):
     # plot da eficiência
     ax[0].plot(up_vib, 'b')
     ax[0].set_xlabel('Timestamp [100 hz]', size=15)
-    ax[0].set_ylabel('Fator de eficiência [%]', size=15)
+    ax[0].set_ylabel('Vibração [mm/s]', size=15)
     ax[0].tick_params(labelsize=15)
     ax[0].grid()
 
