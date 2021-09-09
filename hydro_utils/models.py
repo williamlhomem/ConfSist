@@ -3,11 +3,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from seaborn.relational import scatterplot
 
+from tqdm import tqdm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.model_selection import cross_val_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
 
 class baseline_model():
     '''
@@ -140,3 +143,95 @@ def metrics_conversion(baseline, model, sample_x, temps, sample_y):
     compare_df['model_cost'] = compare_df[['actual', 'model']].apply(metric, axis='columns')
 
     return compare_df
+
+class pca:
+    def __init__(self, data):
+        '''
+        Objeto responsável pela redução dimensional de um conjunto por meio de PCA.
+        I/O:
+            data: um pandas dataframe contendo os dados que serão reduzidos
+        '''
+        self.X = data.copy()
+
+        # normalização dos dados
+        self.scaler = StandardScaler()
+        self.X = self.scaler.fit_transform(self.X)
+
+    def ev_curve(self):
+        '''
+        Método que calcula e plota a curva de variância explicada para análise do número de componentes.
+        '''
+        range_comp = range(1, 100)
+        ve = []
+        for comp in range_comp:
+            model = PCA(n_components=comp, random_state=42).fit(self.X)
+            ve.append(model.explained_variance_ratio_.sum())
+        fig, ax = plt.subplots(figsize=(10,10))
+        ax.plot(range_comp, ve)
+        ax.set_xlabel('Componentes', size=15)
+        ax.set_ylabel('Variância Explicada', size=15)
+        ax.tick_params(labelsize=15)
+        ax.grid()
+
+    def d_reduction(self, n_components):
+        '''
+        Método que realiza a redução dimensional.
+        I/O:
+            n_components: um inteiro que indica o número de componentes usado para a redução.
+        '''
+        self.model = PCA(n_components=n_components, random_state=42).fit(self.X)
+        return pd.DataFrame(self.model.transform(self.X))
+
+class kmeans():
+    def __init__(self, data):
+        '''
+        Objeto que cria um modelo kmeans.
+        I/O:
+            data: conjunto de dados contendo os dados que serão agrupados.
+        '''
+        self.X = data.copy()
+    
+    def cluster_criterion(self, n_clusters, verbose=False):
+        '''
+        Método que verifica o critério de inércia para definição no número de grupos ideal para o agrupamento.
+        I/O:
+            n_clusters: inteiro que indica o número máximo de clusters participantes do critério;
+            verbose: booleano que indica se deve ser informado, ou não, o andamento do cálculo de inércia.
+        '''
+        ine = []
+        n_range = range(2, n_clusters + 1)
+
+        for i in tqdm(n_range):
+            kmeans = KMeans(n_clusters=i, max_iter=5000, random_state=42)
+            kmeans.fit(self.X)
+            ine.append(kmeans.inertia_)            
+            if verbose:
+                print(f'Número de agrupamentos: {i} --- Inércia: {ine[i-2]}')
+               
+        fig, ax = plt.subplots(figsize=(10,10))
+        ax.plot(n_range, ine)
+        ax.set_xticks(n_range)
+        ax.set_xlabel("Número de agrupamentos")
+        ax.set_ylabel("Inércia")
+        ax.grid()
+        
+    def create_model(self, n_clusters):
+        '''
+        Método que cria o modelo kmeans.
+        I/O:
+            n_cluster: inteiro que indica o número de grupos existentes no conjunto de dados.
+        '''
+        self.model = KMeans(n_clusters=n_clusters, max_iter=5000, random_state=42)
+        self.model.fit(self.X)
+    
+    def clustering(self):
+        '''
+        Método que realiza o clustering do conjunto de dados trabalhado.
+        I/O:
+            return cluster_data: um pandas dataframe contendo o conjunto de dados com o rótulo dos agrupamentos feitos pelo modelo.
+        ''' 
+        self.Y_ = self.model.predict(self.X)
+        cluster_data = self.X.copy()
+        cluster_data['cluster'] = self.Y_
+        
+        return cluster_data
